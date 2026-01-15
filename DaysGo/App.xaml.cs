@@ -4,9 +4,8 @@ using System.Windows;
 
 namespace DaysGo;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
+using Application = System.Windows.Application; 
+
 public partial class App : Application
 {
 }

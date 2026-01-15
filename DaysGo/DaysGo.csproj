@@ -1,11 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <ApplicationIcon>app.ico</ApplicationIcon>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
+
+        <!-- 开启此项以使用 NotifyIcon -->
+        <UseWindowsForms>true</UseWindowsForms> 
+
+        <!-- 单文件核心设置 -->
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+
+        <!-- 体积优化 -->
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+        <!-- 自动清理多语言文件夹 (de, es, fr 等) -->
+        <SatelliteResourceLanguages>en-US;zh-CN</SatelliteResourceLanguages>
+
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="app.ico" />
+        <Resource Include="app.ico" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    </ItemGroup>
 
 </Project>

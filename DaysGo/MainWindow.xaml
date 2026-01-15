@@ -1,12 +1,122 @@
 ﻿<Window x:Class="DaysGo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DaysGo"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="d"
+            Title="DaysGo"
+            WindowStartupLocation="Manual" 
+            SizeToContent="WidthAndHeight"
+            Background="Transparent"
+            AllowsTransparency="True"
+            WindowStyle="None"
+            Topmost="False"
+            ShowInTaskbar="False"
+            xmlns:System="clr-namespace:System;assembly=System.Runtime" 
+            PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown">
+    <Window.Resources>
+        <!-- 颜色常量 -->
+        <SolidColorBrush x:Key="MainColor" Color="#EFEFEF"/> <!-- 主色：铂金银 -->
+        <System:Double x:Key="TitleFontSize">28</System:Double> <!-- 标题字号 -->
+        <System:Double x:Key="NumberFontSize">46</System:Double> <!-- 数字字号 -->
+        <System:Double x:Key="UnitFontSize">32</System:Double> <!-- 单位字号 -->
+        <System:Double x:Key="DateFontSize">13</System:Double> <!-- 日期字号 -->
+    
+        <!-- 字体常量 -->
+        <FontFamily x:Key="MainFontFamily">
+            Futura,
+            Segoe UI Variable Display,
+            Open Sans,
+            Inter,
+            Noto Sans CJK SC,
+            LXGW WenKai GB Screen,
+            Microsoft YaHei UI, 
+            Arial
+        </FontFamily>
+    </Window.Resources>
 
+    <Grid Margin="20" Background="#01000000">
+        <ItemsControl ItemsSource="{Binding Items}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="0,0,0,8"
+                            Padding="15,8"
+                            MinWidth="280"
+                            Background="#12FFFFFF"
+                            CornerRadius="12"
+                            BorderBrush="#18FFFFFF"
+                            BorderThickness="1">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="2" Color="Black" Opacity="0.1" ShadowDepth="2" />
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 左侧内容 -->
+                            <StackPanel VerticalAlignment="Center">
+                                <!-- 标题：全亮铂金银 -->
+                                <TextBlock Text="{Binding Title}"
+                                           Foreground="{StaticResource MainColor}"
+                                           FontSize="{StaticResource TitleFontSize}"
+                                           FontFamily="{StaticResource MainFontFamily}"
+                                           FontWeight="SemiBold" />
+
+                                <!-- 日期：使用主色调，但降低不透明度到 60%，产生优雅的从属感 -->
+                                <TextBlock Text="{Binding TargetDate, StringFormat='{}{0:yyyy.MM.dd}'}"
+                                           Foreground="{StaticResource MainColor}"
+                                           FontSize="{StaticResource DateFontSize}"
+                                           FontFamily="{StaticResource MainFontFamily}"
+                                           Opacity="0.7"
+                                           FontWeight="Medium"
+                                           Margin="0,4,0,0" />
+                            </StackPanel>
+
+                            <!-- 右侧数据 -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
+                                        Margin="20,0,0,0">
+                                <!-- 倒数数字：全亮铂金银 -->
+                                <TextBlock Text="{Binding DaysRemaining}"
+                                           Foreground="{StaticResource MainColor}"
+                                           FontSize="{StaticResource NumberFontSize}"
+                                           FontFamily="{StaticResource MainFontFamily}"
+                                           FontWeight="ExtraBold" />
+
+                                <!-- “天”：使用主色调，不透明度 60%，字号适中以保持平衡 -->
+                                <TextBlock Text="{Binding UnitDisplay}" 
+                                           Foreground="{StaticResource MainColor}"
+                                           FontFamily="{StaticResource MainFontFamily}"
+                                           Opacity="0.9"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Bottom"
+                                           Margin="6,0,0,2" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <!-- 默认样式（中文样式） -->
+                                            <Setter Property="FontSize" Value="{StaticResource UnitFontSize}" />
+                                            <Style.Triggers>
+                                                <!-- 逻辑触发：如果是英文(DAYS)，自动缩小字号并调整间距 -->
+                                                <DataTrigger Binding="{Binding DataContext.IsChinese, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                                                    <Setter Property="FontSize" Value="13" /> <!-- 英文较长，字号缩小 -->
+                                                    <Setter Property="Margin" Value="4,0,0,12" /> <!-- 英文基线对齐微调 -->
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                    </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
